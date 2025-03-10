@@ -1,0 +1,8 @@
+{
+	"name": "gateway",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"start": "nest start --watch"
+	}
+}

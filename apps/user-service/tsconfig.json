@@ -1,0 +1,10 @@
+{
+	"compilerOptions": {
+		"declaration": false,
+		"rootDir": "./",
+		"outDir": "../../dist/apps/user-service",
+		"baseUrl": "./"
+	},
+	"extends": "../../tsconfig.json",
+	"include": ["src/**/*"]
+}
