@@ -1,9 +1,11 @@
 {
 	"compilerOptions": {
-		"declaration": false,
-		"rootDir": "./",
+		"rootDir": "../../",
 		"outDir": "../../dist/apps/user-service",
-		"baseUrl": "./"
+		"baseUrl": "./",
+		"paths": {
+			"@libs/*": ["../../libs/*"]
+		}
 	},
 	"extends": "../../tsconfig.json",
 	"include": ["src/**/*"]
