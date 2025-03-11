@@ -13,11 +13,11 @@ import { User } from './user.entity'
 			port: parseInt(process.env.DATABASE_PORT || '5432', 10),
 			username: process.env.DATABASE_USER || 'test_postgre',
 			password: process.env.DATABASE_PASSWORD || 'test_password',
-			autoLoadEntities: true,
-			synchronize: true,
 			database: process.env.DATABASE_NAME || 'test_database',
-			entities: [User]
-		})
+			autoLoadEntities: true,
+			synchronize: true
+		}),
+		TypeOrmModule.forFeature([User])
 	],
 	controllers: [UserController],
 	providers: [UserService]

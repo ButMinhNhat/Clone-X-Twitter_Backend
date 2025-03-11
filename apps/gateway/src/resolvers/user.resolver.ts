@@ -3,9 +3,11 @@ import {
 	ClientProxy,
 	Transport
 } from '@nestjs/microservices'
-import { Query, Resolver } from '@nestjs/graphql'
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { OnModuleInit } from '@nestjs/common'
 import { firstValueFrom } from 'rxjs'
+
+import { UserDTO, SignUpReq, SignUpRes, SignInReq } from 'src/DTOs/user.dto'
 
 @Resolver()
 export class UserResolvers implements OnModuleInit {
@@ -18,9 +20,21 @@ export class UserResolvers implements OnModuleInit {
 		})
 	}
 
-	@Query(() => String)
-	async getUser() {
-		const result = await firstValueFrom(this.client.send('get_user', {}))
+	///// @Mutation
+	@Mutation(() => SignUpRes)
+	async user_SignIn(@Args('input') body: SignInReq): Promise<string> {
+		return firstValueFrom(this.client.send('user.sign_in', body))
+	}
+
+	@Mutation(() => SignUpRes)
+	async user_SignUp(@Args('input') body: SignUpReq): Promise<string> {
+		return firstValueFrom(this.client.send('user.sign_up', body))
+	}
+
+	///// @Query
+	@Query(() => [UserDTO])
+	async user_GetUser(): Promise<UserDTO[]> {
+		const result = await firstValueFrom(this.client.send('user.get_user', {}))
 		return result
 	}
 }
