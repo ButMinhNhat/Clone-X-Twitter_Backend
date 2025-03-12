@@ -15,10 +15,10 @@ export class UserDTO {
 	avatar: string
 
 	@Field()
-	createdAt: string
+	createdAt: string | Date
 
 	@Field()
-	updatedAt: string
+	updatedAt: string | Date
 }
 
 @InputType()
@@ -43,7 +43,7 @@ export class SignInReq {
 }
 
 @ObjectType()
-export class SignUpRes extends UserDTO {
+export class AuthRes extends UserDTO {
 	@Field()
 	accessToken: string
 

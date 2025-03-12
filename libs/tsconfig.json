@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"rootDir": "./",
+		"outDir": "../dist/libs",
+		"composite": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"baseUrl": "./",
+		"paths": {
+			"@libs/*": ["./*"]
+		}
+	},
+	"include": ["**/*"]
+}

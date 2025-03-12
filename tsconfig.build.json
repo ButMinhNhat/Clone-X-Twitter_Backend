@@ -1,4 +1,14 @@
 {
-  "extends": "./tsconfig.json",
-  "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
+	"compilerOptions": {
+		"outDir": "dist",
+		"rootDir": "./",
+		"baseUrl": "./",
+		"paths": {
+			"@libs/*": ["libs/*"]
+		}
+	},
+	"exclude": ["node_modules", "test", "dist", "**/*spec.ts"],
+
+	"extends": "./tsconfig.json",
+	"include": ["apps/**/*", "libs/**/*"]
 }

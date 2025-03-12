@@ -1,12 +1,15 @@
 {
 	"compilerOptions": {
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
 		"rootDir": "./src",
 		"outDir": "../../dist/apps/user-service",
 		"baseUrl": "./",
 		"paths": {
-			"@libs/*": ["../../libs/*"]
+			"@libs/*": ["../../dist/libs/*"]
 		}
 	},
 	"extends": "../../tsconfig.json",
-	"include": ["src/**/*"]
+	"include": ["src/**/*"],
+	"references": [{ "path": "../../libs" }]
 }

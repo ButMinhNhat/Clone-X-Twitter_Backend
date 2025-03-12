@@ -10,14 +10,15 @@
 		"apps/user-service"
 	],
 	"scripts": {
-		"build": "nest build",
+		"build": "npm run build:libs && nest build",
+		"build:libs": "tsc -p tsconfig.libs.json",
 		"format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
 		"start": "nest start",
 		"start:dev": "nest start --watch",
 		"start:debug": "nest start --debug --watch",
 		"start:prod": "node dist/apps/clone_x/main",
 		"gateway": "ts-node ./libs/kill-port.ts 8080 && npm run start --workspace=apps/gateway",
-		"user": "npm run start --workspace=apps/user-service",
+		"user": "npm run build:libs && npm run start --workspace=apps/user-service",
 		"lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
 		"test": "jest",
 		"test:watch": "jest --watch",

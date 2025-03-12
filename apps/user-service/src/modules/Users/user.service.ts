@@ -1,12 +1,11 @@
 import { BadGatewayException, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-
-import { User } from './user.entity'
 import * as jwt from 'jsonwebtoken'
 import * as bcrypt from 'bcrypt'
 
-type AuthRes = User & { accessToken: string; refreshToken: string }
+import { AuthRes } from '@libs/index'
+import { User } from './user.entity'
 
 @Injectable()
 export class UserService {
