@@ -3,7 +3,7 @@ import { Controller } from '@nestjs/common'
 
 import { UserService } from './user.service'
 import { User } from './user.entity'
-import { AuthRes } from '@libs/DTOs'
+import { AuthRes } from '@libs'
 
 @Controller()
 export class UserController {

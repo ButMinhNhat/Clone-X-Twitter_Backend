@@ -6,6 +6,7 @@
 		"outDir": "../../dist/apps/user-service",
 		"baseUrl": "./",
 		"paths": {
+			"@libs": ["../../dist/libs/index"],
 			"@libs/*": ["../../dist/libs/*"]
 		}
 	},

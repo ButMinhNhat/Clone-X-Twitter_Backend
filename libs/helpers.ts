@@ -39,28 +39,45 @@ export const generateBoostrap = async (
 		if (pid) execSync(`taskkill /PID ${pid} /F`)
 	} catch {}
 
-	// generate app with database
-	@Module({ imports: [DatabaseConnection(database), ...listModules] })
-	class AppModule {}
-
-	// generate microservices
+	// generate app
 	const logger = new Logger(name)
-	const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-		AppModule,
-		{ transport: Transport.TCP, options: { port } }
-	)
-	app.useGlobalFilters(new GraphQLExceptionFilter())
+	switch (moduleName) {
+		case 'GATEWAY':
+			try {
+				// generate and run app
+				const gatewayApp = await NestFactory.create(listModules[0])
+				await gatewayApp.listen(port)
 
-	// run app
-	try {
-		await app.listen()
-		logger.log(`🚀 ${name} is running on port ${port}`)
-	} catch (error) {
-		logger.error(`❌ ${name} started failed!`, error)
+				logger.log(`✅ Gateway has started on http://localhost:${port}/graphql`)
+			} catch (error) {
+				logger.error(`❌ Gateway started failed!`, error)
+			}
+			break
+
+		default:
+			// connect database
+			@Module({ imports: [DatabaseConnection(database), ...listModules] })
+			class AppModule {}
+
+			try {
+				// generate microservices
+				const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+					AppModule,
+					{ transport: Transport.TCP, options: { port } }
+				)
+				app.useGlobalFilters(new GraphQLExceptionFilter())
+
+				// run app
+				await app.listen()
+				logger.log(`✅ ${name} is running on port ${port}`)
+			} catch (error) {
+				logger.error(`❌ ${name} started failed!`, error)
+			}
+			break
 	}
 }
 
-export const wrapResolvers = (rpcCall: Observable<any>) => {
+export const wrapResolvers = async (rpcCall: Observable<any>) => {
 	try {
 		return firstValueFrom(rpcCall)
 	} catch (error) {

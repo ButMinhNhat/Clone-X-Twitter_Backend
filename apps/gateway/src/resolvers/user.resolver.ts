@@ -5,9 +5,15 @@ import {
 } from '@nestjs/microservices'
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { OnModuleInit } from '@nestjs/common'
-import { firstValueFrom } from 'rxjs'
 
-import { UserDTO, SignUpReq, SignUpRes, SignInReq } from 'src/DTOs/user.dto'
+import {
+	wrapResolvers,
+	SignInReq,
+	SignUpReq,
+	AuthRes,
+	UserDTO,
+	ports
+} from '@libs'
 
 @Resolver()
 export class UserResolvers implements OnModuleInit {
@@ -16,25 +22,25 @@ export class UserResolvers implements OnModuleInit {
 	onModuleInit() {
 		this.client = ClientProxyFactory.create({
 			transport: Transport.TCP,
-			options: { port: 8081 }
+			options: { port: ports.USER.port }
 		})
 	}
 
 	///// @Mutation
-	@Mutation(() => SignUpRes)
-	async user_SignIn(@Args('input') body: SignInReq): Promise<string> {
-		return firstValueFrom(this.client.send('user.sign_in', body))
+	@Mutation(() => AuthRes)
+	async user_SignIn(@Args('input') body: SignInReq): Promise<AuthRes> {
+		return wrapResolvers(this.client.send('user.sign_in', body))
 	}
 
-	@Mutation(() => SignUpRes)
-	async user_SignUp(@Args('input') body: SignUpReq): Promise<string> {
-		return firstValueFrom(this.client.send('user.sign_up', body))
+	@Mutation(() => AuthRes)
+	async user_SignUp(@Args('input') body: SignUpReq): Promise<AuthRes> {
+		return wrapResolvers(this.client.send('user.sign_up', body))
 	}
 
 	///// @Query
 	@Query(() => [UserDTO])
 	async user_GetUser(): Promise<UserDTO[]> {
-		const result = await firstValueFrom(this.client.send('user.get_user', {}))
+		const result = await wrapResolvers(this.client.send('user.get_user', {}))
 		return result
 	}
 }

@@ -24,8 +24,8 @@ export class User {
 	avatar: string
 
 	@CreateDateColumn()
-	createdAt: Date
+	createdAt: string
 
 	@UpdateDateColumn()
-	updatedAt: Date
+	updatedAt: string
 }

@@ -4,8 +4,8 @@ import { Repository } from 'typeorm'
 import * as jwt from 'jsonwebtoken'
 import * as bcrypt from 'bcrypt'
 
-import { AuthRes } from '@libs/index'
 import { User } from './user.entity'
+import { AuthRes } from '@libs'
 
 @Injectable()
 export class UserService {

@@ -15,10 +15,10 @@ export class UserDTO {
 	avatar: string
 
 	@Field()
-	createdAt: string | Date
+	createdAt: string
 
 	@Field()
-	updatedAt: string | Date
+	updatedAt: string
 }
 
 @InputType()
