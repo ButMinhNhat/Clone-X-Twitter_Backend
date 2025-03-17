@@ -1,4 +1,4 @@
-import { CommentModule, TweetModule } from './modules'
+import { CommentModule, TweetModule, LikeModule, ViewModule } from './modules'
 import { generateBoostrap } from '@libs'
 
-generateBoostrap('TWEET', [TweetModule, CommentModule])
+generateBoostrap('TWEET', [CommentModule, TweetModule, LikeModule, ViewModule])

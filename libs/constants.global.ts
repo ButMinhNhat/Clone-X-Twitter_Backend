@@ -30,6 +30,9 @@ export const serviceActions = {
 		getTweets: 'tweet.get_tweets',
 
 		// Comment
-		getComments: 'tweet.get_comments'
+		getComments: 'tweet.get_comments',
+
+		// Like
+		getLikes: 'tweet.get_likes'
 	}
 }
