@@ -1,14 +1,12 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/clone_x/src",
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true,
     "tsConfigPath": "apps/clone_x/tsconfig.app.json"
   },
   "monorepo": true,
-  "root": "apps/clone_x",
   "projects": {
     "clone_x": {
       "type": "application",
@@ -17,15 +15,6 @@
       "sourceRoot": "apps/clone_x/src",
       "compilerOptions": {
         "tsConfigPath": "apps/clone_x/tsconfig.app.json"
-      }
-    },
-    "user-service": {
-      "type": "application",
-      "root": "apps/user-service",
-      "entryFile": "main",
-      "sourceRoot": "apps/user-service/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/user-service/tsconfig.app.json"
       }
     },
     "gateway": {
@@ -37,41 +26,25 @@
         "tsConfigPath": "apps/gateway/tsconfig.app.json"
       }
     },
-    "order": {
+    "user-service": {
       "type": "application",
-      "root": "apps/order",
+      "root": "apps/user-service",
       "entryFile": "main",
-      "sourceRoot": "apps/order/src",
+      "sourceRoot": "apps/user-service/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/order/tsconfig.app.json"
+        "tsConfigPath": "apps/user-service/tsconfig.app.json"
       }
     },
-    "order-service": {
+    "tweet-service": {
       "type": "application",
-      "root": "apps/order-service",
+      "root": "apps/tweet-service",
       "entryFile": "main",
-      "sourceRoot": "apps/order-service/src",
+      "sourceRoot": "apps/tweet-service/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/order-service/tsconfig.app.json"
-      }
-    },
-    "orderabc-service": {
-      "type": "application",
-      "root": "apps/orderabc-service",
-      "entryFile": "main",
-      "sourceRoot": "apps/orderabc-service/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/orderabc-service/tsconfig.app.json"
-      }
-    },
-    "order1": {
-      "type": "application",
-      "root": "apps/order1",
-      "entryFile": "main",
-      "sourceRoot": "apps/order1/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/order1/tsconfig.app.json"
+        "tsConfigPath": "apps/tweet-service/tsconfig.app.json"
       }
     }
-  }
+  },
+  "root": "apps/clone_x",
+  "sourceRoot": "apps/clone_x/src"
 }

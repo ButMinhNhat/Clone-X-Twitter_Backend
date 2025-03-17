@@ -7,13 +7,16 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { OnModuleInit } from '@nestjs/common'
 
 import {
+	serviceActions,
 	wrapResolvers,
+	servicePorts,
 	SignInReq,
 	SignUpReq,
 	AuthRes,
-	UserDTO,
-	ports
+	UserDTO
 } from '@libs'
+
+const { USER } = serviceActions
 
 @Resolver()
 export class UserResolvers implements OnModuleInit {
@@ -22,25 +25,25 @@ export class UserResolvers implements OnModuleInit {
 	onModuleInit() {
 		this.client = ClientProxyFactory.create({
 			transport: Transport.TCP,
-			options: { port: ports.USER.port }
+			options: { port: servicePorts.USER.port }
 		})
 	}
 
 	///// @Mutation
 	@Mutation(() => AuthRes)
 	async user_SignIn(@Args('input') body: SignInReq): Promise<AuthRes> {
-		return wrapResolvers(this.client.send('user.sign_in', body))
+		return wrapResolvers(this.client.send(USER.signIn, body))
 	}
 
 	@Mutation(() => AuthRes)
 	async user_SignUp(@Args('input') body: SignUpReq): Promise<AuthRes> {
-		return wrapResolvers(this.client.send('user.sign_up', body))
+		return wrapResolvers(this.client.send(USER.signUp, body))
 	}
 
 	///// @Query
 	@Query(() => [UserDTO])
 	async user_GetUser(): Promise<UserDTO[]> {
-		const result = await wrapResolvers(this.client.send('user.get_user', {}))
+		const result = await wrapResolvers(this.client.send(USER.getUsers, {}))
 		return result
 	}
 }

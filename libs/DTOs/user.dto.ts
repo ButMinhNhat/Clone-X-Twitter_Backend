@@ -11,6 +11,9 @@ export class UserDTO {
 	@Field()
 	fullName: string
 
+	@Field()
+	tagName: string
+
 	@Field({ nullable: true })
 	avatar: string
 

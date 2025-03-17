@@ -1,28 +1,41 @@
 {
-	"compilerOptions": {
-		"module": "commonjs",
-		"declaration": true,
-		"removeComments": true,
-		"emitDecoratorMetadata": true,
-		"experimentalDecorators": true,
-		"allowSyntheticDefaultImports": true,
-		"target": "ES2021",
-		"sourceMap": false,
-		"outDir": "./dist",
-		"incremental": true,
-		"skipLibCheck": true,
-		"strictNullChecks": false,
-		"noImplicitAny": false,
-		"strictBindCallApply": false,
-		"forceConsistentCasingInFileNames": false,
-		"noFallthroughCasesInSwitch": false,
-		"rootDir": "./",
-		"baseUrl": "./",
-		"paths": {
-			"@libs/*": ["libs/*"]
-		}
-	},
-	"exclude": ["node_modules", "dist", "libs"],
-	"include": ["apps/**/*", "libs/**/*"],
-	"references": [{ "path": "libs" }]
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2021",
+    "sourceMap": false,
+    "outDir": "./dist",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "rootDir": "./",
+    "baseUrl": "./",
+    "paths": {
+      "@libs/*": [
+        "libs/*"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "libs"
+  ],
+  "include": [
+    "apps/**/*",
+    "libs/**/*"
+  ],
+  "references": [
+    {
+      "path": "libs"
+    }
+  ]
 }

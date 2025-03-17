@@ -9,25 +9,14 @@ import { NestFactory } from '@nestjs/core'
 import { execSync } from 'child_process'
 
 import { GraphQLExceptionFilter } from './exceptionFilter'
+import { servicePorts } from './constants.global'
 import { DatabaseConnection } from './database'
-
-export const ports = {
-	GATEWAY: {
-		port: 8080,
-		name: 'Gateway'
-	},
-	USER: {
-		port: 8081,
-		name: 'User Service',
-		database: 'test_database'
-	}
-}
 
 export const generateBoostrap = async (
 	moduleName: string,
 	listModules: any[]
 ) => {
-	const { port, name, database } = ports[moduleName]
+	const { port, name, database } = servicePorts[moduleName]
 	if (!port) process.exit(1)
 
 	// kill port before running

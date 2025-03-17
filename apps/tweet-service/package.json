@@ -1,0 +1,7 @@
+{
+	"name": "tweet-service",
+	"version": "0.0.1",
+	"scripts": {
+		"start": "nest start --watch"
+	}
+}
