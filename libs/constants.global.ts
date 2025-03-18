@@ -21,6 +21,7 @@ export const serviceActions = {
 		// User
 		signIn: 'user.sign_in',
 		signUp: 'user.sign_up',
+		authentication: 'user.authentication',
 		getUsers: 'user.get_user'
 	},
 

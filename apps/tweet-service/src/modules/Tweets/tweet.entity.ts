@@ -23,7 +23,7 @@ export class Tweet {
 	@Column()
 	contents: string
 
-	@Column()
+	@Column('text', { array: true })
 	images: string[]
 
 	@Column()

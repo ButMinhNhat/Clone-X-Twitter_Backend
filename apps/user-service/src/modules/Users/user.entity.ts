@@ -20,9 +20,6 @@ export class User {
 	@Column()
 	fullName: string
 
-	@Column()
-	tagName: string
-
 	@Column({ nullable: true })
 	avatar: string
 

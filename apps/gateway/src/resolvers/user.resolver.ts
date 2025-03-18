@@ -15,6 +15,7 @@ import {
 	AuthRes,
 	UserDTO
 } from '@libs'
+import { IsPublic } from 'src/guard'
 
 const { USER } = serviceActions
 
@@ -31,11 +32,13 @@ export class UserResolvers implements OnModuleInit {
 
 	///// @Mutation
 	@Mutation(() => AuthRes)
+	@IsPublic()
 	async user_SignIn(@Args('input') body: SignInReq): Promise<AuthRes> {
 		return wrapResolvers(this.client.send(USER.signIn, body))
 	}
 
 	@Mutation(() => AuthRes)
+	@IsPublic()
 	async user_SignUp(@Args('input') body: SignUpReq): Promise<AuthRes> {
 		return wrapResolvers(this.client.send(USER.signUp, body))
 	}

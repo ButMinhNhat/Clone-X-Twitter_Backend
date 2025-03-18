@@ -1,10 +1,14 @@
 import {
-	MicroserviceOptions,
-	RpcException,
-	Transport
-} from '@nestjs/microservices'
+	InternalServerErrorException,
+	BadGatewayException,
+	BadRequestException,
+	NotFoundException,
+	HttpStatus,
+	Logger,
+	Module
+} from '@nestjs/common'
+import { MicroserviceOptions, Transport } from '@nestjs/microservices'
 import { firstValueFrom, Observable } from 'rxjs'
-import { Logger, Module } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { execSync } from 'child_process'
 
@@ -67,9 +71,30 @@ export const generateBoostrap = async (
 }
 
 export const wrapResolvers = async (rpcCall: Observable<any>) => {
-	try {
-		return firstValueFrom(rpcCall)
-	} catch (error) {
-		throw new RpcException(error.message || 'Internal Server Error')
+	const res = await firstValueFrom(rpcCall)
+
+	// HTTP errors
+	switch (res.status) {
+		case HttpStatus.BAD_REQUEST:
+			throw new BadRequestException(res.message)
+
+		case HttpStatus.NOT_FOUND:
+			throw new NotFoundException(res.message)
+
+		case HttpStatus.INTERNAL_SERVER_ERROR:
+			throw new InternalServerErrorException(res.message)
+
+		case HttpStatus.BAD_GATEWAY:
+			throw new BadGatewayException(res.message)
 	}
+
+	// SQL errors
+	if (
+		res.severity === 'ERROR' &&
+		['23502', '23505', '22P02'].includes(res.code)
+	)
+		throw new BadRequestException(res.detail)
+
+	// Success
+	return res
 }

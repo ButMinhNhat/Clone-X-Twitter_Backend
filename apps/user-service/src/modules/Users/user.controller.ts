@@ -1,7 +1,7 @@
 import { MessagePattern } from '@nestjs/microservices'
 import { Controller } from '@nestjs/common'
 
-import { serviceActions, AuthRes } from '@libs'
+import { serviceActions, AuthRes, UserDTO } from '@libs'
 import { UserService } from './user.service'
 import { User } from './user.entity'
 
@@ -21,6 +21,11 @@ export class UserController {
 		body: Pick<User, 'email' | 'fullName' | 'password'>
 	): Promise<AuthRes> {
 		return this.userService.signUp(body)
+	}
+
+	@MessagePattern(USER.authentication)
+	async authentication(token: string): Promise<UserDTO> {
+		return this.userService.authentication(token)
 	}
 
 	@MessagePattern(USER.getUsers)
