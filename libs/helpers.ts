@@ -1,18 +1,17 @@
 import {
-	InternalServerErrorException,
-	BadGatewayException,
-	BadRequestException,
-	NotFoundException,
-	HttpStatus,
-	Logger,
-	Module
-} from '@nestjs/common'
-import { MicroserviceOptions, Transport } from '@nestjs/microservices'
+	MicroserviceOptions,
+	RpcException,
+	Transport
+} from '@nestjs/microservices'
+import { Logger, Module } from '@nestjs/common'
 import { firstValueFrom, Observable } from 'rxjs'
 import { NestFactory } from '@nestjs/core'
 import { execSync } from 'child_process'
 
-import { GraphQLExceptionFilter } from './exceptionFilter'
+import {
+	GatewayExceptionFilter,
+	ServiceExceptionFilter
+} from './exceptionFilter'
 import { servicePorts } from './constants.global'
 import { DatabaseConnection } from './database'
 
@@ -39,8 +38,10 @@ export const generateBoostrap = async (
 			try {
 				// generate and run app
 				const gatewayApp = await NestFactory.create(listModules[0])
-				await gatewayApp.listen(port)
+				gatewayApp.useGlobalFilters(new GatewayExceptionFilter())
 
+				// run app
+				await gatewayApp.listen(port)
 				logger.log(`✅ Gateway has started on http://localhost:${port}/graphql`)
 			} catch (error) {
 				logger.error(`❌ Gateway started failed!`, error)
@@ -58,7 +59,7 @@ export const generateBoostrap = async (
 					AppModule,
 					{ transport: Transport.TCP, options: { port } }
 				)
-				app.useGlobalFilters(new GraphQLExceptionFilter())
+				app.useGlobalFilters(new ServiceExceptionFilter(name))
 
 				// run app
 				await app.listen()
@@ -73,27 +74,8 @@ export const generateBoostrap = async (
 export const wrapResolvers = async (rpcCall: Observable<any>) => {
 	const res = await firstValueFrom(rpcCall)
 
-	// HTTP errors
-	switch (res.status) {
-		case HttpStatus.BAD_REQUEST:
-			throw new BadRequestException(res.message)
-
-		case HttpStatus.NOT_FOUND:
-			throw new NotFoundException(res.message)
-
-		case HttpStatus.INTERNAL_SERVER_ERROR:
-			throw new InternalServerErrorException(res.message)
-
-		case HttpStatus.BAD_GATEWAY:
-			throw new BadGatewayException(res.message)
-	}
-
-	// SQL errors
-	if (
-		res.severity === 'ERROR' &&
-		['23502', '23505', '22P02'].includes(res.code)
-	)
-		throw new BadRequestException(res.detail)
+	// Error handler
+	if (res.error) throw new RpcException(JSON.parse(res.error.message))
 
 	// Success
 	return res

@@ -1,17 +1,15 @@
 import {
-	UnauthorizedException,
 	BadRequestException,
 	ExecutionContext,
 	CanActivate,
-	Injectable,
-	SetMetadata
+	SetMetadata,
+	Injectable
 } from '@nestjs/common'
 import { ClientProxyFactory, Transport } from '@nestjs/microservices'
 import { GqlExecutionContext } from '@nestjs/graphql'
 import { Reflector } from '@nestjs/core'
-import { firstValueFrom } from 'rxjs'
 
-import { serviceActions, servicePorts } from '@libs'
+import { serviceActions, servicePorts, wrapResolvers } from '@libs'
 
 const { USER } = serviceActions
 
@@ -42,18 +40,13 @@ export class AuthGuard implements CanActivate {
 			transport: Transport.TCP,
 			options: { port: servicePorts.USER.port }
 		})
-		try {
-			const resUser = await firstValueFrom(
-				userServiceClient.send(USER.authentication, token)
-			)
-			if (resUser.status === 401)
-				throw new UnauthorizedException(resUser.message)
 
-			req.user = resUser
-			return true
-		} catch (error) {
-			throw new Error(error)
-		}
+		// validate user
+		const resUser = await wrapResolvers(
+			userServiceClient.send(USER.authentication, token)
+		)
+		req.user = resUser
+		return true
 	}
 }
 
