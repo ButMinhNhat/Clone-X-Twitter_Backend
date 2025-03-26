@@ -9,25 +9,36 @@ import {
 	Entity
 } from 'typeorm'
 
+import { RefTweetType } from '@libs'
+
 @Entity('tweets')
 export class Tweet {
 	@PrimaryGeneratedColumn('uuid')
 	id: string
 
+	@Column({ type: 'uuid' })
+	profileId: string
+
 	@Column({ type: 'uuid', nullable: true })
 	refTweetId: string
 
-	@Column({ type: 'uuid' })
-	authorId: string
+	@Column({ type: 'enum', enum: RefTweetType, nullable: true })
+	refTweetType: RefTweetType
+
+	@Column()
+	isPinned: boolean
 
 	@Column()
 	contents: string
 
-	@Column('text', { array: true })
+	@Column({ type: 'text', array: true, nullable: true })
 	images: string[]
 
-	@Column()
+	@Column({ nullable: true })
 	video: string
+
+	@Column({ type: 'uuid' })
+	userId: string
 
 	@CreateDateColumn()
 	createdAt: string
