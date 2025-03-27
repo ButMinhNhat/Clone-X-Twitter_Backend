@@ -1,3 +1,4 @@
+// Constants
 export const servicePorts = {
 	GATEWAY: {
 		port: 8080,
@@ -29,6 +30,7 @@ export const serviceActions = {
 	TWEET: {
 		// Tweet
 		getTweets: 'tweet.get_tweets',
+		cudTweet: 'tweet.cud_tweet',
 
 		// Comment
 		getComments: 'tweet.get_comments',
@@ -36,4 +38,10 @@ export const serviceActions = {
 		// Like
 		getLikes: 'tweet.get_likes'
 	}
+}
+
+// Type & Interface
+export type AuthCtx = {
+	userId: string
+	actions: string[]
 }

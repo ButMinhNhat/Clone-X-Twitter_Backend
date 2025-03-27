@@ -12,10 +12,10 @@ import {
 	servicePorts,
 	SignInReq,
 	SignUpReq,
+	IsPublic,
 	AuthRes,
 	UserDTO
 } from '@libs'
-import { IsPublic } from 'src/guard'
 
 const { USER } = serviceActions
 

@@ -11,6 +11,6 @@
 		}
 	},
 	"extends": "../../tsconfig.json",
-	"include": ["src/**/*"],
+	"include": ["src/**/*", "../../libs/configs/guard.ts"],
 	"references": [{ "path": "../../libs" }]
 }

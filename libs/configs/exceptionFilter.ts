@@ -34,14 +34,15 @@ export class ServiceExceptionFilter implements ExceptionFilter {
 
 	catch(exception: any, host: ArgumentsHost) {
 		const defaultError = {
-			message: 'Internal server error!',
+			message: 'Error occurred!',
 			status: HttpStatus.INTERNAL_SERVER_ERROR
 		}
 
 		// HTTP errors
 		if (exception instanceof HttpException) {
-			defaultError.message = JSON.stringify(exception.getResponse())
-			defaultError.status = exception.getStatus()
+			const errorResponse = exception.getResponse()
+			defaultError.message = errorResponse['message']
+			defaultError.status = errorResponse['statusCode']
 		}
 
 		// Database errors

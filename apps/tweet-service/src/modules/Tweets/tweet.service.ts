@@ -6,8 +6,8 @@ import {
 import { FindOneOptions, Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 
+import { AuthCtx, RefTweetType } from '@libs'
 import { Tweet } from './tweet.entity'
-import { RefTweetType } from '@libs'
 
 @Injectable()
 export class TweetService {
@@ -18,6 +18,8 @@ export class TweetService {
 
 	// Main services
 
+	getTweets = async () => this.tweetRepository.find()
+
 	getTweet = async (
 		options: FindOneOptions<Tweet>,
 		showProfile: boolean = false
@@ -27,8 +29,11 @@ export class TweetService {
 		return result
 	}
 
-	createTweet = async (body: Partial<Tweet>): Promise<Tweet> => {
-		const { refTweetId, profileId, userId } = body
+	createTweet = async (
+		body: Partial<Tweet>,
+		{ userId }: AuthCtx
+	): Promise<Tweet> => {
+		const { refTweetId, profileId } = body
 
 		const [refTweet] = await Promise.all([
 			// check valid refTweetId
@@ -57,21 +62,24 @@ export class TweetService {
 		])
 
 		// create data
-		const tweetEntity = this.tweetRepository.create(body)
+		const tweetEntity = this.tweetRepository.create({ ...body, userId })
 		const resTweet = await this.tweetRepository.save(tweetEntity)
 
 		return { ...resTweet, refTweet }
 	}
 
-	updateTweet = async ({ id, ...body }: Partial<Tweet>): Promise<Tweet> => {
+	updateTweet = async (
+		{ id, ...body }: Partial<Tweet>,
+		context: AuthCtx
+	): Promise<Tweet> => {
 		const existedData = await this.getTweet({ where: { id } })
 		await this.tweetRepository.save(Object.assign(existedData, body))
 		return this.getTweet({ where: { id }, relations: ['refTweet'] }, true)
 	}
 
-	deleteTweet = async (id: string): Promise<boolean> => {
-		const result = await this.tweetRepository.delete(id)
+	deleteTweet = async (id: string, context: AuthCtx) => {
+		const result = await this.tweetRepository.delete({ id })
 		if (!result.affected) throw new NotFoundException('Tweet not found!')
-		return true
+		return null
 	}
 }

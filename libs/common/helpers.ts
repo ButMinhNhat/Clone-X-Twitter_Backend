@@ -3,17 +3,17 @@ import {
 	RpcException,
 	Transport
 } from '@nestjs/microservices'
-import { Logger, Module } from '@nestjs/common'
 import { firstValueFrom, Observable } from 'rxjs'
+import { Logger, Module } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { execSync } from 'child_process'
 
 import {
 	GatewayExceptionFilter,
 	ServiceExceptionFilter
-} from './exceptionFilter'
-import { servicePorts } from './constants.global'
-import { DatabaseConnection } from './database'
+} from '../configs/exceptionFilter'
+import { DatabaseConnection } from '../configs/database'
+import { servicePorts } from './constants'
 
 export const generateBoostrap = async (
 	moduleName: string,
@@ -75,7 +75,7 @@ export const wrapResolvers = async (rpcCall: Observable<any>) => {
 	const res = await firstValueFrom(rpcCall)
 
 	// Error handler
-	if (res.error) throw new RpcException(JSON.parse(res.error.message))
+	if (res?.error) throw new RpcException(res.error)
 
 	// Success
 	return res

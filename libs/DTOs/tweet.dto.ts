@@ -1,12 +1,14 @@
 import {
 	registerEnumType,
+	PartialType,
 	ObjectType,
+	InputType,
 	PickType,
 	Field,
 	ID
 } from '@nestjs/graphql'
 
-import { RefTweetType } from '@libs/enums'
+import { RefTweetType } from '../common'
 import { UserDTO } from './user.dto'
 
 registerEnumType(RefTweetType, { name: 'RefTweetType' })
@@ -44,21 +46,21 @@ export class TweetDTO {
 	updatedAt: string
 }
 
-export class TweetMutationDto extends PickType(TweetDTO, [
-	'id',
-	'profileId',
-	'refTweetId',
-	'refTweetType',
-	'contents',
-	'images',
-	'video'
-]) {
+@InputType()
+export class TweetMutationDto extends PartialType(
+	PickType(
+		TweetDTO,
+		['id', 'profileId', 'contents', 'images', 'video'],
+		InputType
+	)
+) {
 	@Field({ nullable: true })
-	isDelete: boolean
+	isDelete?: boolean
 }
 
+@ObjectType()
 export class ResTweetDto extends TweetDTO {
-	@Field()
+	@Field(() => UserDTO, { nullable: true })
 	profile?: Partial<UserDTO>
 
 	@Field(() => TweetDTO, { nullable: true })

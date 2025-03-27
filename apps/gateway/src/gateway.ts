@@ -4,8 +4,8 @@ import { ConfigModule } from '@nestjs/config'
 import { APP_GUARD } from '@nestjs/core'
 import { Module } from '@nestjs/common'
 
-import { UserResolvers } from './resolvers/user.resolver'
-import { AuthGuard } from './guard'
+import { UserResolvers, TweetResolvers } from './resolvers'
+import { AuthGuard } from '@libs/configs/guard'
 
 @Module({
 	imports: [
@@ -17,7 +17,8 @@ import { AuthGuard } from './guard'
 		}),
 
 		// Resolvers
-		UserResolvers
+		UserResolvers,
+		TweetResolvers
 	],
 	providers: [{ provide: APP_GUARD, useClass: AuthGuard }]
 })

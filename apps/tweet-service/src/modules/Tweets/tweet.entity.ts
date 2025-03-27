@@ -25,7 +25,7 @@ export class Tweet {
 	@Column({ type: 'enum', enum: RefTweetType, nullable: true })
 	refTweetType: RefTweetType
 
-	@Column()
+	@Column({ type: 'boolean', default: false })
 	isPinned: boolean
 
 	@Column()

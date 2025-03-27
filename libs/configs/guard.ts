@@ -9,7 +9,7 @@ import { ClientProxyFactory, Transport } from '@nestjs/microservices'
 import { GqlExecutionContext } from '@nestjs/graphql'
 import { Reflector } from '@nestjs/core'
 
-import { serviceActions, servicePorts, wrapResolvers } from '@libs'
+import { serviceActions, servicePorts, wrapResolvers } from '../common'
 
 const { USER } = serviceActions
 
@@ -45,7 +45,7 @@ export class AuthGuard implements CanActivate {
 		const resUser = await wrapResolvers(
 			userServiceClient.send(USER.authentication, token)
 		)
-		req.user = resUser
+		req.authContext = { userId: resUser.id, actions: [] }
 		return true
 	}
 }
