@@ -5,30 +5,28 @@ import { serviceActions, AuthRes, UserDTO } from '@libs'
 import { UserService } from './user.service'
 import { User } from './user.entity'
 
-const { USER } = serviceActions
+const { USER_SERVICE } = serviceActions
 
 @Controller()
 export class UserController {
 	constructor(private userService: UserService) {}
 
-	@MessagePattern(USER.signIn)
+	@MessagePattern(USER_SERVICE.signIn)
 	async signIn(body: Pick<User, 'email' | 'password'>): Promise<AuthRes> {
 		return this.userService.signIn(body)
 	}
 
-	@MessagePattern(USER.signUp)
-	async signUp(
-		body: Pick<User, 'email' | 'fullName' | 'password'>
-	): Promise<AuthRes> {
+	@MessagePattern(USER_SERVICE.signUp)
+	async signUp(body: Pick<User, 'email' | 'password'>): Promise<AuthRes> {
 		return this.userService.signUp(body)
 	}
 
-	@MessagePattern(USER.authentication)
+	@MessagePattern(USER_SERVICE.authentication)
 	async authentication(token: string): Promise<UserDTO> {
 		return this.userService.authentication(token)
 	}
 
-	@MessagePattern(USER.getUsers)
+	@MessagePattern(USER_SERVICE.getUsers)
 	async getUser(): Promise<User[]> {
 		return this.userService.getUser()
 	}

@@ -4,7 +4,8 @@ import { ConfigModule } from '@nestjs/config'
 import { APP_GUARD } from '@nestjs/core'
 import { Module } from '@nestjs/common'
 
-import { UserResolvers, TweetResolvers } from './resolvers'
+import { UserResolvers, TweetResolvers, RoleResolvers } from './resolvers'
+import { TweetClient, UserClient } from './clients'
 import { AuthGuard } from '@libs/configs/guard'
 
 @Module({
@@ -14,12 +15,19 @@ import { AuthGuard } from '@libs/configs/guard'
 		GraphQLModule.forRoot<ApolloDriverConfig>({
 			driver: ApolloDriver,
 			autoSchemaFile: true
-		}),
+		})
+	],
+	providers: [
+		{ provide: APP_GUARD, useClass: AuthGuard },
+
+		// Clients
+		UserClient,
+		TweetClient,
 
 		// Resolvers
 		UserResolvers,
+		RoleResolvers,
 		TweetResolvers
-	],
-	providers: [{ provide: APP_GUARD, useClass: AuthGuard }]
+	]
 })
 export class Gateway {}

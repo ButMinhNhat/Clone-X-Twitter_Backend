@@ -1,40 +1,32 @@
-import {
-	ClientProxyFactory,
-	ClientProxy,
-	Transport
-} from '@nestjs/microservices'
 import { Mutation, Resolver, Query, Args } from '@nestjs/graphql'
-import { OnModuleInit } from '@nestjs/common'
+import { ClientProxy } from '@nestjs/microservices'
 
 import {
 	TweetMutationDto,
 	serviceActions,
 	wrapResolvers,
-	servicePorts,
 	ResTweetDto,
 	AuthContext,
 	IsPublic,
 	AuthCtx
 } from '@libs'
+import { TweetClient } from 'src/clients'
 
-const { TWEET } = serviceActions
+const { TWEET_SERVICE } = serviceActions
 
 @Resolver()
-export class TweetResolvers implements OnModuleInit {
+export class TweetResolvers {
 	private client: ClientProxy
 
-	onModuleInit() {
-		this.client = ClientProxyFactory.create({
-			transport: Transport.TCP,
-			options: { port: servicePorts.TWEET.port }
-		})
+	constructor(private readonly tweetClient: TweetClient) {
+		this.client = tweetClient.getClient()
 	}
 
 	///// @Query
 	@Query(() => [ResTweetDto])
 	@IsPublic()
 	async tweet_getTweets(): Promise<ResTweetDto[]> {
-		return wrapResolvers(this.client.send(TWEET.getTweets, {}))
+		return wrapResolvers(this.client.send(TWEET_SERVICE.getTweets, {}))
 	}
 
 	///// @Mutation
@@ -43,6 +35,8 @@ export class TweetResolvers implements OnModuleInit {
 		@Args('input') body: TweetMutationDto,
 		@AuthContext() context: AuthCtx
 	): Promise<ResTweetDto> {
-		return wrapResolvers(this.client.send(TWEET.cudTweet, { body, context }))
+		return wrapResolvers(
+			this.client.send(TWEET_SERVICE.cudTweet, { body, context })
+		)
 	}
 }

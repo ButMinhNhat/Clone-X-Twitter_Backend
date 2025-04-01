@@ -5,7 +5,7 @@ import { ViewService } from './view.service'
 import { serviceActions } from '@libs'
 import { View } from './view.entity'
 
-const { TWEET } = serviceActions
+const { TWEET_SERVICE } = serviceActions
 
 @Controller()
 export class ViewController {

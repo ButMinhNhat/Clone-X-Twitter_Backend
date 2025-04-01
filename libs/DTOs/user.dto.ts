@@ -1,5 +1,6 @@
 import { Field, ObjectType, ID, InputType } from '@nestjs/graphql'
 
+// Response
 @ObjectType()
 export class UserDTO {
 	@Field(() => ID)
@@ -7,6 +8,20 @@ export class UserDTO {
 
 	@Field()
 	email: string
+
+	@Field()
+	verifiedAt: string
+
+	@Field()
+	createdAt: string
+
+	@Field()
+	updatedAt: string
+}
+
+export class ProfileDTO {
+	@Field(() => ID)
+	id: string
 
 	@Field()
 	fullName: string
@@ -21,6 +36,7 @@ export class UserDTO {
 	updatedAt: string
 }
 
+// Request
 @InputType()
 export class SignUpReq {
 	@Field()

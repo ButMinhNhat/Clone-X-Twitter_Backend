@@ -4,12 +4,12 @@ export const servicePorts = {
 		port: 8080,
 		name: 'Gateway'
 	},
-	USER: {
+	USER_SERVICE: {
 		port: 8081,
 		name: 'User Service',
 		database: 'user_service'
 	},
-	TWEET: {
+	TWEET_SERVICE: {
 		port: 8082,
 		name: 'Tweet Service',
 		database: 'tweet_service'
@@ -18,16 +18,20 @@ export const servicePorts = {
 
 export const serviceActions = {
 	///// User service
-	USER: {
+	USER_SERVICE: {
 		// User
 		signIn: 'user.sign_in',
 		signUp: 'user.sign_up',
 		authentication: 'user.authentication',
-		getUsers: 'user.get_user'
+		getUsers: 'user.get_users',
+
+		// Role
+		getRoles: 'role.get_roles',
+		cudRole: 'role.cud_role'
 	},
 
 	///// Tweet service
-	TWEET: {
+	TWEET_SERVICE: {
 		// Tweet
 		getTweets: 'tweet.get_tweets',
 		cudTweet: 'tweet.cud_tweet',

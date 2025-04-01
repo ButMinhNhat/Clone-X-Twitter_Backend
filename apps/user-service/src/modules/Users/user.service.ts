@@ -1,7 +1,7 @@
 import {
+	UnauthorizedException,
 	BadRequestException,
-	Injectable,
-	UnauthorizedException
+	Injectable
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
@@ -37,7 +37,7 @@ export class UserService {
 
 		// Find user and check password
 		const userDetail = await this.userRepository.findOne({ where: { email } })
-		if (!userDetail || !bcrypt.compare(password, userDetail.password))
+		if (!userDetail || !(await bcrypt.compare(password, userDetail.password)))
 			throw new BadRequestException('Invalid email or password!')
 
 		return { ...userDetail, ...this.generateJWT({ userId: userDetail.id }) }
@@ -45,17 +45,15 @@ export class UserService {
 
 	signUp = async ({
 		email,
-		fullName,
 		password
-	}: Pick<User, 'email' | 'fullName' | 'password'>): Promise<AuthRes> => {
-		if (!email || !fullName || !password)
+	}: Pick<User, 'email' | 'password'>): Promise<AuthRes> => {
+		if (!email || !password)
 			throw new BadRequestException('Invalid email, fullName or password!')
 
 		// hash password and save data
 		const hashPassword = await bcrypt.hash(password, this.salt)
 		const userEntity = this.userRepository.create({
 			email,
-			fullName,
 			password: hashPassword
 		})
 		const result = await this.userRepository.save(userEntity)

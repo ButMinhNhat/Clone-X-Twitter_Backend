@@ -3,26 +3,22 @@ import {
 	CreateDateColumn,
 	UpdateDateColumn,
 	ManyToMany,
-	JoinTable,
 	Column,
 	Entity
 } from 'typeorm'
 
-import { Role } from '../Roles/role.entity'
+import { User } from '../Users/user.entity'
 
-@Entity('users')
-export class User {
+@Entity('roles')
+export class Role {
 	@PrimaryGeneratedColumn('uuid')
 	id: string
 
 	@Column({ unique: true })
-	email: string
+	name: string
 
-	@Column()
-	password: string
-
-	@Column({ nullable: true })
-	verifiedAt: string
+	@Column({ default: '' })
+	description: string
 
 	@CreateDateColumn()
 	createdAt: string
@@ -31,7 +27,6 @@ export class User {
 	updatedAt: string
 
 	// Relations
-	@ManyToMany(() => Role, role => role.users)
-	@JoinTable()
-	roles: Role[]
+	@ManyToMany(() => User, user => user.roles)
+	users: User[]
 }

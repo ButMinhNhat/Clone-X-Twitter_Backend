@@ -2,7 +2,6 @@ import {
 	BadRequestException,
 	ExecutionContext,
 	CanActivate,
-	SetMetadata,
 	Injectable
 } from '@nestjs/common'
 import { ClientProxyFactory, Transport } from '@nestjs/microservices'
@@ -11,9 +10,7 @@ import { Reflector } from '@nestjs/core'
 
 import { serviceActions, servicePorts, wrapResolvers } from '../common'
 
-const { USER } = serviceActions
-
-export const IsPublic = () => SetMetadata('isPublic', true)
+const { USER_SERVICE } = serviceActions
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -38,13 +35,12 @@ export class AuthGuard implements CanActivate {
 		// validate token
 		const userServiceClient = ClientProxyFactory.create({
 			transport: Transport.TCP,
-			options: { port: servicePorts.USER.port }
+			options: { port: servicePorts.USER_SERVICE.port }
 		})
-
-		// validate user
 		const resUser = await wrapResolvers(
-			userServiceClient.send(USER.authentication, token)
+			userServiceClient.send(USER_SERVICE.authentication, token)
 		)
+
 		req.authContext = { userId: resUser.id, actions: [] }
 		return true
 	}

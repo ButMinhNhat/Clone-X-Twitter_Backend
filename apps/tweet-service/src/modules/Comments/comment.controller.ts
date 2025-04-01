@@ -5,13 +5,13 @@ import { CommentService } from './comment.service'
 import { Comment } from './comment.entity'
 import { serviceActions } from '@libs'
 
-const { TWEET } = serviceActions
+const { TWEET_SERVICE } = serviceActions
 
 @Controller()
 export class CommentController {
 	constructor(private commentService: CommentService) {}
 
-	@MessagePattern(TWEET.getComments)
+	@MessagePattern(TWEET_SERVICE.getComments)
 	async getTweet(): Promise<Comment[]> {
 		return this.commentService.getComment()
 	}

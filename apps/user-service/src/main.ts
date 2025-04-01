@@ -1,4 +1,4 @@
+import { UserModule, RoleModule } from './modules'
 import { generateBoostrap } from '@libs'
-import { UserModule } from './modules'
 
-generateBoostrap('USER', [UserModule])
+generateBoostrap('USER_SERVICE', [UserModule, RoleModule])
