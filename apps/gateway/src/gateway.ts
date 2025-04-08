@@ -4,7 +4,12 @@ import { ConfigModule } from '@nestjs/config'
 import { APP_GUARD } from '@nestjs/core'
 import { Module } from '@nestjs/common'
 
-import { UserResolvers, TweetResolvers, RoleResolvers } from './resolvers'
+import {
+	ActionResolvers,
+	TweetResolvers,
+	RoleResolvers,
+	UserResolvers
+} from './resolvers'
 import { TweetClient, UserClient } from './clients'
 import { AuthGuard } from '@libs/configs/guard'
 
@@ -27,6 +32,7 @@ import { AuthGuard } from '@libs/configs/guard'
 		// Resolvers
 		UserResolvers,
 		RoleResolvers,
+		ActionResolvers,
 		TweetResolvers
 	]
 })

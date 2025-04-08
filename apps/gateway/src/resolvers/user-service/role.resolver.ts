@@ -1,5 +1,4 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
-import { ClientProxy } from '@nestjs/microservices'
 
 import {
 	serviceActions,

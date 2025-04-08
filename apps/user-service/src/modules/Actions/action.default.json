@@ -1,0 +1,15 @@
+{
+	"user-service": {
+		"user": {
+			"read": 1
+		},
+		"role": {
+			"read": 1,
+			"modify": 1
+		},
+		"action": {
+			"read": 1,
+			"modify": 1
+		}
+	}
+}

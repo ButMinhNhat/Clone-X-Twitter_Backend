@@ -27,7 +27,10 @@ export const serviceActions = {
 
 		// Role
 		getRoles: 'role.get_roles',
-		cudRole: 'role.cud_role'
+		cudRole: 'role.cud_role',
+
+		// Action
+		getActions: 'action.get_actions'
 	},
 
 	///// Tweet service
